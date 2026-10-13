@@ -1,0 +1,7 @@
+# As browseML builds: WebAssembly SIMD, which every current browser runs. The search keeps its additions in order
+# (exactness first), so SIMD here only speeds what the compiler may vectorize without changing a result.
+[target.wasm32-unknown-unknown]
+rustflags = ["-C", "target-feature=+simd128"]
+
+[target.wasm32-wasip1]
+rustflags = ["-C", "target-feature=+simd128"]

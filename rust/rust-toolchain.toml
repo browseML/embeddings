@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: MIT OR Apache-2.0
+# browseML's toolchain (its rust-toolchain.toml), with the WebAssembly targets the page loads. The crate itself also
+# builds and tests on 1.95 stable natively; the pin is so `cargo build --target wasm32-…` finds its std.
+[toolchain]
+channel = "1.99.0"
+components = ["clippy"]
+targets = ["wasm32-unknown-unknown", "wasm32-wasip1"]

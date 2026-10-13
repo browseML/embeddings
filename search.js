@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 // Search in the browser, as bankML's Savante searches its .history: BM25 over words (k1 = 1.2, b = 0.75, Lucene's
-// idf), and reciprocal rank fusion (k = 60, Cormack, Clarke and Büttcher 2009) to combine it with a second ranking —
+// idf, each query word counted once, as Savante's set(toks(q))), and reciprocal rank fusion (k = 60, Cormack, Clarke and Büttcher 2009) to combine it with a second ranking —
 // meaning (embeddings) when a model for them runs here. The scores are Savante's, number for number (tested against
 // its formula). Nothing is sent anywhere.
 
@@ -22,7 +22,7 @@ export class BM25 {
   }
   /** Each document's score for the query, in the order added. */
   scores(query) {
-    const n = this.docs.length, avg = n ? this.docs.reduce((s, d) => s + d.len, 0) / n : 1, q = tokens(query);
+    const n = this.docs.length, avg = n ? this.docs.reduce((s, d) => s + d.len, 0) / n : 1, q = new Set(tokens(query));
     return this.docs.map((d) => {
       let sc = 0;
       for (const w of q) {

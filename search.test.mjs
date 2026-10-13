@@ -12,6 +12,10 @@ test("BM25 scores are Savante's, number for number (its formula, computed in Pyt
     got.forEach((s, i) => assert.ok(Math.abs(s - want[i]) < 1e-12, `${q} doc ${i}: ${s} vs ${want[i]}`));
   }
 });
+test("a repeated query word counts once, as in Savante (set(toks(q)))", () => {
+  const idx = new BM25(ex.docs), want = ex.queries["browser cpu"];
+  idx.scores("browser BROWSER cpu").forEach((s, i) => assert.ok(Math.abs(s - want[i]) < 1e-12, `doc ${i}: ${s} vs ${want[i]}`));
+});
 test("the right document first", () => {
   const idx = new BM25(ex.docs);
   assert.equal(idx.rank("does my typing leave the device")[0], 4);

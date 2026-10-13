@@ -1,0 +1,32 @@
+[package]
+name = "browseml-embeddings"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.95"   # the oldest toolchain the tests have run on
+authors = ["Professor Codephreak", "Gregory L. Magnusson"]
+repository = "https://github.com/browseML/embeddings"
+description = "browseML's search in Rust: Savante's words, BM25 (k1 = 1.2, b = 0.75, Lucene idf), reciprocal rank fusion (k = 60) and cosine — no dependency, no_std + alloc, native and WebAssembly"
+license = "MIT OR Apache-2.0"
+publish = false
+
+[lib]
+path = "src/lib.rs"
+# rlib for Rust users and the tests; cdylib is the .wasm a page loads (search-wasm.js)
+crate-type = ["rlib", "cdylib"]
+
+[features]
+# std only supplies the allocator and panic handler the cdylib needs; the search itself is core + alloc.
+# Check the no_std build with: cargo rustc --lib --no-default-features --crate-type rlib
+default = ["std"]
+std = []
+
+# No dependencies, by design.
+[dependencies]
+
+[workspace]
+
+[profile.release]
+lto = true
+codegen-units = 1
+panic = "abort"
+opt-level = 3
